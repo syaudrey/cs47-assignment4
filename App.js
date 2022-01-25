@@ -2,11 +2,9 @@ import { StyleSheet, Text, SafeAreaView } from "react-native";
 import { useState, useEffect } from "react";
 import { ResponseType, useAuthRequest } from "expo-auth-session";
 import { myTopTracks, albumTracks } from "./utils/apiOptions";
-import Colors from "./Themes/colors";
-import Images from "./Themes/images";
 import { REDIRECT_URI, SCOPES, CLIENT_ID, ALBUM_ID } from "./utils/constants";
 
-// Endpoints
+// Endpoints for authorizing with Spotify
 const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
   tokenEndpoint: "https://accounts.spotify.com/api/token"
@@ -48,9 +46,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       {/* TODO */}
-      <Text style={{ color: "white" }}>
-          Welcome to Assignment 3 - Spotify
-        </Text>
+      <Text style={{ color: "white" }}>Welcome to Assignment 3 - Spotify</Text>
     </SafeAreaView>
   );
 }
