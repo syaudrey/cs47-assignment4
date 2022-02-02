@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { ResponseType, useAuthRequest } from "expo-auth-session";
 import { myTopTracks, albumTracks } from "./utils/apiOptions";
 import { REDIRECT_URI, SCOPES, CLIENT_ID, ALBUM_ID } from "./utils/constants";
+import Colors from "./Themes/colors"
 
 // Endpoints for authorizing with Spotify
 const discovery = {
