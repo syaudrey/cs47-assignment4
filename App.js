@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import { StyleSheet, Text, SafeAreaView, Pressable, Image, View, FlatList } from "react-native";
 import { useState, useEffect } from "react";
 import { ResponseType, useAuthRequest } from "expo-auth-session";
@@ -5,8 +6,12 @@ import { myTopTracks, albumTracks } from "./utils/apiOptions";
 import { REDIRECT_URI, SCOPES, CLIENT_ID, ALBUM_ID } from "./utils/constants";
 import Colors from "./Themes/colors";
 import Images from "./Themes/images";
-
 import Song from './Song';
+import Details from './Details';
+import Preview from './Preview';
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 // Endpoints for authorizing with Spotify
 const discovery = {
@@ -44,7 +49,6 @@ export default function App() {
   }, [token]);
 
 
-
   function AuthButton() {
   	return (
   	  <Pressable onPress={promptAsync} style={styles.button}>
@@ -61,7 +65,9 @@ export default function App() {
   	  title={item.name}
   	  artist={item.artists[0].name}
   	  album={item.album.name}
-  	  duration={item.duration_ms} />
+  	  duration={item.duration_ms}
+  	  external_url={item.external_urls.spotify}
+  	  preview_url={item.preview_url} />
   );
 
   function SongList() {
@@ -82,20 +88,31 @@ export default function App() {
     );
   }
 
-
-
   let contentDisplayed = null;
-
   if (token) {
   	contentDisplayed = <SongList/>
   } else {
   	contentDisplayed = <AuthButton/>
   }
 
+  function Main() {
+  	return (
+  	  <SafeAreaView style={styles.container}>
+        {contentDisplayed}
+      </SafeAreaView>
+  	)
+  }
+
+  const Stack = createStackNavigator();
+
   return (
-    <SafeAreaView style={styles.container}>
-      {contentDisplayed}
-    </SafeAreaView>
+  	<NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Main" component={Main} options={{headerShown: false}} />
+        <Stack.Screen name="Details" component={Details} options={{headerStyle: {backgroundColor: Colors.background}, headerTitleStyle: {color: 'white'}}} />
+        <Stack.Screen name="Preview" component={Preview} options={{headerStyle: {backgroundColor: Colors.background}, headerTitleStyle: {color: 'white'}}} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
@@ -130,7 +147,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
   },
-
 
   songlist: {
     flex: 1,
